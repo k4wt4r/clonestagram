@@ -6,7 +6,8 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
-const connectionString = 'mongodb+srv://dolanee:736567061@cluster0.fs50k.mongodb.net/clonestagram?retryWrites=true&w=majority';
+const passwordDb = config.get('PasswordDatabase');
+const connectionString = `mongodb+srv://dolanee:${passwordDb}@cluster0.fs50k.mongodb.net/clonestagram?retryWrites=true&w=majority`;
 
 if (!config.get('PrivateKey')) {
     console.error('FATAL ERROR: PrivateKey is not defined.');
