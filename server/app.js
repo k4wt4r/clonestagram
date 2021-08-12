@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 
 
-if (!config.get('PrivateKey')) {
+if (!process.env.PRIVATE_KEY) {
     console.error('FATAL ERROR: PrivateKey is not defined.');
     process.exit(1);
 }

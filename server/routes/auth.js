@@ -1,3 +1,4 @@
+require('dotenv').config()
 const joi = require('joi');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
 
     const token = jwt.sign({
         _id: user._id
-    }, config.get('PrivateKey'));
+    }, process.env.PRIVATE_KEY);
     res.send(token);
 });
 

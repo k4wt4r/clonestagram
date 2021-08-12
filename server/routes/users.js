@@ -1,3 +1,4 @@
+require('dotenv').config()
 const bcrypt = require('bcrypt');
 const {
     User,
@@ -29,16 +30,23 @@ router.post('/', async (req, res) => {
         return res.status(400).json('That user already exisits!');
     } else {
         // Insert the new user if they do not exist yet
-        user = new User(_.pick(req.body, ['name', 'email', 'password']));
+        user = new User(_.pick(req.body, ['name', 'email', 'password', 'birthday']));
 
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
         await user.save();
         const token = jwt.sign({
             _id: user._id
-        }, config.get('PrivateKey'));
+        }, process.env.PRIVATE_KEY);
         res.header('x-auth-token', token).json(_.pick(user, ['_id', 'name', 'email']));
     }
 });
+
+router.get('/:id', async (req, res) => {
+    let user = await User.findOne({
+        name: req.params.id
+    })
+    res.status(200).json(_.pick(user, ['name', 'email']));
+})
 
 module.exports = router;
